@@ -58,7 +58,7 @@ TODO
 
 ## Features
 
-- [ ] Boots on QEMU (`-M raspi3b` or similar) and prints to UART
+- [X] Boots on QEMU (`-M raspi3b` or similar) and prints to UART
 - [ ] Exception vector table with synchronous exception handling
 - [ ] GIC-based timer interrupt
 - [ ] Context switching between multiple tasks (round-robin or similar)
@@ -67,9 +67,14 @@ TODO
 
 ## Milestones
 
-<!--
-Update this as you go — it doubles as your changelog and your "story" for interviews.
--->
+Wed. July 29th: First Commit:
+It's been a long time in the works, but, after pages and pages of notes and
+hours of studying, I finally was able to boot the kernel and print to the
+terminal with UART0! The most challenging hurtle so far has been shaping an
+accurate mental model of the pi. This is the first time the idea of memory 
+mapped IO concretized itself in my mind. To be honest, this territory is
+uncormfortably close to the hardware for my background, but that's why it's so
+important to learn. Next up: Exceptions!
 
 | Week | Milestone | Status |
 |------|-----------|--------|
