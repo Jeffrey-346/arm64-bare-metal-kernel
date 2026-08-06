@@ -76,6 +76,20 @@ mapped IO concretized itself in my mind. To be honest, this territory is
 uncormfortably close to the hardware for my background, but that's why it's so
 important to learn. Next up: Exceptions!
 
+Thur. August 6th: Second Commit:
+Guys I didn't know what a vector table was before this. Since my last commit
+I've learned alot, mostly through xv6, so it's been a bit difficult converting
+everything in my brain from RISC-V to ARM but probably good for reinforcing
+concepts. I read chapters 2 and 4 of the xv6 manaul and then completed the 
+syscalls lab from 2021: tracing getpid() from start to finish (wow PERL files
+are nice) and then implementing two of my own syscalls. Then I started learning
+about ARM trap handling with the vector tables. This commit marks a successful
+skeleton vector table: svc #0 correct sends us to an entry of the vector table,
+which currently only redirects us to an infinite loop, but will soon actually
+save states and address the excpetions. Oh I also had a nasty bug having to do
+with the 31st but of the HCR_EL2 register, which was saying to execute instructions
+as AArch32. Took about an hour and a half to debug that.
+
 | Week | Milestone | Status |
 |------|-----------|--------|
 | 1 | Toolchain + QEMU set up, ARM64 assembly basics | ⬜ |
@@ -137,7 +151,9 @@ raspberry-pi-os, OSDev wiki, the xv6 book) — being upfront about what you
 followed vs. extended makes the extensions more credible, not less.
 -->
 
-- [ ] Tutorial(s) followed:
+- [ ] Tutorial(s) followed: 
+    bztsrc's raspi3-tutorial (github.com/bztsrc/raspi3-tutorial)
+    rlepigre's bare-metal-aarch64 repo (github.com/rlepigre/bare-metal-aarch64)
 - [ ] Reference material:
 
 ---

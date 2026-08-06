@@ -1,17 +1,20 @@
 SRCS = $(wildcard *.c)
-OBJS = $(SRCS:.c=.o)
-CFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib
+ASMS = $(wildcard *.S)
+OBJS = $(SRCS:.c=.o) $(ASMS:.S=.o)
+CFLAGS = -Wall -O2 -g -ffreestanding -nostdinc -nostdlib
+GDBPORT = $(shell expr `id -u` % 5000 + 25000)
 
 all: clean kernel8.img
 
-boot.o: boot.S
-	aarch64-elf-gcc $(CFLAGS) -c boot.S -o boot.o
+%.o: %.S
+	aarch64-elf-gcc $(CFLAGS) -c $< -o $@
+
 
 %.o: %.c
 	aarch64-elf-gcc $(CFLAGS) -c $< -o $@
 
-kernel8.img: boot.o $(OBJS)
-	aarch64-elf-ld -nostdlib boot.o $(OBJS) -T link.ld -o kernel8.elf
+kernel8.img: $(OBJS)
+	aarch64-elf-ld -nostdlib $(OBJS) -T link.ld -o kernel8.elf
 	aarch64-elf-objcopy -O binary kernel8.elf kernel8.img
 
 clean:
@@ -19,3 +22,11 @@ clean:
 
 run:
 	qemu-system-aarch64 -M raspi3b -kernel kernel8.img -serial stdio
+
+qemu-gdb:
+	qemu-system-aarch64 -M raspi3b -kernel kernel8.img -serial stdio -S -gdb tcp::$(GDBPORT)
+
+debug:
+	qemu-system-aarch64 -M raspi3b -kernel kernel8.img -serial stdio -d int -D qemu.log -S -gdb tcp::$(GDBPORT) & \
+	sleep 1; \
+	aarch64-elf-gdb kernel8.elf -ex "target remote localhost:$(GDBPORT)"

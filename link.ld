@@ -19,5 +19,9 @@ SECTIONS
         *(.bss*);
         _bss_end = .;
     }
+    .table : {
+        _table_start = .;
+        *(.table*);
+    }
     _end = .;
 }
