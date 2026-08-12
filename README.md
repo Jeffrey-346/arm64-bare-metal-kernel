@@ -60,7 +60,7 @@ TODO
 
 - [X] Boots on QEMU (`-M raspi3b` or similar) and prints to UART
 - [X] Exception vector table with synchronous exception handling
-- [ ] GIC-based timer interrupt
+- [X] ARM generic timer interrupt
 - [ ] Context switching between multiple tasks (round-robin or similar)
 - [ ] Interactive shell over UART with a small command set
 - [ ] _(stretch)_ additional shell commands / basic memory inspection / etc.
@@ -99,13 +99,25 @@ the CS show must go on. I've implemented an exception vector table that handles
 synchronous excpetions from EL1 to EL1. I started with a skeleton that redirected
 from the vector table to an infinite loop (previous commit) but now it prints
 the cause of the exception and the return address through UART0. Next up is
-handling interrupts. 
+handling interrupts.
+
+Wed. August 12: Fourth Commit:
+Timer IRQ via QA7 CNTP routing, ack via TVAL re-arm.
+To be honest in my academic journey, this commit was heavily aided by AI. There
+is just a lot of hardware jargon going on with the timer, especially since it
+needs to be routed through QA7, which—since I'm only working with one core—is
+overcomplicated. This is a learning moment though. I gained more intution for
+peripherals (although this timer is within the core), learned how the timer 
+actaully goes off (there's a register counting upwards forever, which will take 
+~30,000 years to wrap around!!), and successfully handled another type of 
+exception using my vector table! Next up is Concurrency and the locking lab
+from xv6!
 
 | Week | Milestone | Status |
 |------|-----------|--------|
 | 1 | Toolchain + QEMU set up, ARM64 assembly basics | ✅ |
 | 2 | Kernel boots, UART "hello world" | ✅ |
-| 3 | Exception vector table, timer interrupt firing | ⬜ |
+| 3 | Exception vector table, timer interrupt firing | ✅ |
 | 4 | Context switching between 2+ tasks | ⬜ |
 | 5–6 | Interactive UART shell with command dispatch | ⬜ |
 | 7 | Polish, demo recording, README finalized | ⬜ |

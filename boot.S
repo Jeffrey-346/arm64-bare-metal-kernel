@@ -51,8 +51,14 @@ ready:
     // initialize uart communication
     bl uart_init
 
-    // let's just test if everything is working with a syscall
-    svc #0
+    // Arm the interrupt timer
+    bl timer_init
+
+    // Route through QA7
+    bl timer_route_core0
+
+    // Unmask (open the interrupt flood gates)
+    msr daifclr, #2
 
     // clear bss because C demands it
     ldr     x2, =_bss_start

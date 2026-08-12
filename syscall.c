@@ -1,5 +1,4 @@
 #include "uart.h"
-#include "mbox.h"
 
 struct trapframe {
     long x0;
@@ -40,7 +39,7 @@ struct trapframe {
 };
 
 
-void exception_handler(struct trapframe* trapframe_p) {
+void syscall_handler_c(struct trapframe* trapframe_p) {
     long elr_el1 = trapframe_p->ELR_EL1;
     long esr_el1 = trapframe_p->ESR_EL1;
 
