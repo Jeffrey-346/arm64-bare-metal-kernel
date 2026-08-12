@@ -20,7 +20,7 @@ _start:
     // set ELR_EL2 so eret jumps to ready
     mov     x0, #(1 << 31)      // HCR_EL2.RW = 1 → EL1 is AArch64
     msr     HCR_EL2, x0
-    
+
     adr     x0, ready
     msr     ELR_EL2, x0
 
@@ -47,6 +47,9 @@ ready:
     // set VBAR_EL1 to the address of the table
     adr     x0, vectors
     msr     VBAR_EL1, x0
+
+    // initialize uart communication
+    bl uart_init
 
     // let's just test if everything is working with a syscall
     svc #0

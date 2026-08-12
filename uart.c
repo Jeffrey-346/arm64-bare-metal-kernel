@@ -81,3 +81,14 @@ void uart_puts(char* s) {
         uart_send(*s++);
     }
 }
+
+void uart_puthex(unsigned long x)
+{
+    const char* hex = "0123456789abcdef";
+
+    uart_puts("0x");
+
+    for (int i = 60; i >= 0; i -= 4) {
+        uart_send(hex[(x >> i) & 0xf]);
+    }
+}

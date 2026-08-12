@@ -59,7 +59,7 @@ TODO
 ## Features
 
 - [X] Boots on QEMU (`-M raspi3b` or similar) and prints to UART
-- [ ] Exception vector table with synchronous exception handling
+- [X] Exception vector table with synchronous exception handling
 - [ ] GIC-based timer interrupt
 - [ ] Context switching between multiple tasks (round-robin or similar)
 - [ ] Interactive shell over UART with a small command set
@@ -90,10 +90,21 @@ save states and address the excpetions. Oh I also had a nasty bug having to do
 with the 31st but of the HCR_EL2 register, which was saying to execute instructions
 as AArch32. Took about an hour and a half to debug that.
 
+Tue. August 11: Third Commit:
+We've fallen a bit behind here ladies and gentlemen. I took a trip to Lousiana
+to see my grandparents. I will put it here because I think the world should know:
+my grandmother placed second in the Women's World Archery championship, only
+losing to some Edith Bane (what a villian name) in an overtime shoot out. Alas
+the CS show must go on. I've implemented an exception vector table that handles
+synchronous excpetions from EL1 to EL1. I started with a skeleton that redirected
+from the vector table to an infinite loop (previous commit) but now it prints
+the cause of the exception and the return address through UART0. Next up is
+handling interrupts. 
+
 | Week | Milestone | Status |
 |------|-----------|--------|
-| 1 | Toolchain + QEMU set up, ARM64 assembly basics | ⬜ |
-| 2 | Kernel boots, UART "hello world" | ⬜ |
+| 1 | Toolchain + QEMU set up, ARM64 assembly basics | ✅ |
+| 2 | Kernel boots, UART "hello world" | ✅ |
 | 3 | Exception vector table, timer interrupt firing | ⬜ |
 | 4 | Context switching between 2+ tasks | ⬜ |
 | 5–6 | Interactive UART shell with command dispatch | ⬜ |

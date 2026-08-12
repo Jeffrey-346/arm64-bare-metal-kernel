@@ -2,9 +2,8 @@
 #include "mbox.h"
 
 int main() {
-    uart_init();
 
-    uart_puts("Hello Jeffrey. I'm Kernel. Welcome to my space...\n");
+    uart_puts("\nHello Jeffrey. I'm Kernel. Welcome to my space...\n");
 
     while(1) {
         // double echo forever
