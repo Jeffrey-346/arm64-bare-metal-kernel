@@ -7,21 +7,21 @@ interactive shell over UART.
 
 **Status:** 🚧 In progress — see [Milestones](#milestones) below.
 
-**Demo:** _[link to asciinema recording or video — add once you have your first working milestone]_
+**Demo:** It's in the works people.
 
 ---
 
 ## What it does
 
 This kernel boots directly on ARM64 hardware with no underlying OS, initializes 
-its own interrupt controller and exception handlers — — validated by 
+its own interrupt controller and exception handlers — validated by 
 deliberately triggering and catching a synchronous fault to confirm correct trap 
 entry and exit — and prints over a serial (UART) connection. Currently 
 implementing a preemprtive context-switch between multiple independent tasks. 
 
 ## Why I built this
 
-Decided to build this project because of my interest in systems. As a sophmore
+I decided to build this project because of my interest in systems. As a sophmore
 I took a foundations of systems course (Brown's csci0300) that I adored so
 much I became a TA for the course the next semester. Now I am planning to 
 take the next systems course at Brown (csci 1690 - Operating Systems). This
@@ -31,6 +31,7 @@ motivation as preparation for the OS course.
 ## Architecture
 
 Power on
+
   → boot.S (set up stack, drop to EL1, initialize UART and interrupts, jump to C)
   → kernel_main() (transmit message over UART, echo inputs)
   → Exception/interrupt handling (sync + IRQ paths)
