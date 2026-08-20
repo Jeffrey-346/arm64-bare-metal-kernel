@@ -13,48 +13,29 @@ interactive shell over UART.
 
 ## What it does
 
-<!--
-One paragraph, written for someone non-technical or a recruiter skimming quickly.
-Fill this in once the shell is working — something like:
-
-"This kernel boots directly on ARM64 hardware with no underlying OS, initializes its
-own interrupt controller and exception handlers, and can run and context-switch
-between multiple independent tasks. It exposes a small interactive shell over a
-serial (UART) connection, so you can type commands and get real-time responses
-from code running with no operating system underneath it."
--->
-
-TODO
+This kernel boots directly on ARM64 hardware with no underlying OS, initializes 
+its own interrupt controller and exception handlers — — validated by 
+deliberately triggering and catching a synchronous fault to confirm correct trap 
+entry and exit — and prints over a serial (UART) connection. Currently 
+implementing a preemprtive context-switch between multiple independent tasks. 
 
 ## Why I built this
 
-<!--
-2-3 sentences. This is the part interviewers actually ask about — connect it to
-your background (CSCI 0300 at Brown, TAing it, prepping for the ARM64 OS course)
-and what gap it filled. E.g. "0300 covers OS concepts using x86 and an existing
-kernel (WeensyOS) as scaffolding. I wanted to build the hardware/software boundary
-myself, from power-on, on an architecture (ARM64) I hadn't worked with before."
--->
-
-TODO
+Decided to build this project because of my interest in systems. As a sophmore
+I took a foundations of systems course (Brown's csci0300) that I adored so
+much I became a TA for the course the next semester. Now I am planning to 
+take the next systems course at Brown (csci 1690 - Operating Systems). This
+project is first founded from personal interest and has the bonus additional
+motivation as preparation for the OS course. 
 
 ## Architecture
 
-<!--
-Bullet list or a simple diagram (even ASCII) is fine. Something like:
-
 Power on
-  → boot.S (set up stack, drop to EL1, jump to C)
-  → kernel_main() (initialize UART, exception vector table, GIC/timer)
+  → boot.S (set up stack, drop to EL1, initialize UART and interrupts, jump to C)
+  → kernel_main() (transmit message over UART, echo inputs)
   → Exception/interrupt handling (sync + IRQ paths)
-  → Scheduler (context switch between N tasks via swtch-style routine)
-  → UART shell (read command line, dispatch to handler, print result)
-
-Fill in the real flow once it stabilizes — this section is what a technical
-reviewer reads first, so keep it accurate and specific rather than aspirational.
--->
-
-TODO
+  → TODO: Scheduler (context switch between N tasks via swtch-style routine)
+  → TODO: UART shell (read command line, dispatch to handler, print result)
 
 ## Features
 
@@ -105,7 +86,7 @@ Wed. August 12: Fourth Commit:
 Timer IRQ via QA7 CNTP routing, ack via TVAL re-arm.
 To be honest in my academic journey, this commit was heavily aided by AI. There
 is just a lot of hardware jargon going on with the timer, especially since it
-needs to be routed through QA7, which—since I'm only working with one core—is
+needs to be routed through QA7, which—since I'm only working with one core for now—is
 overcomplicated. This is a learning moment though. I gained more intution for
 peripherals (although this timer is within the core), learned how the timer 
 actaully goes off (there's a register counting upwards forever, which will take 
@@ -124,10 +105,6 @@ from xv6!
 
 ## Build & run
 
-<!--
-Fill in as your toolchain solidifies. Be exact — someone should be able to clone
-and run this without asking you questions. Example shape:
-
 ### Prerequisites
 - `aarch64-none-elf` cross-compiler toolchain
 - QEMU (`qemu-system-aarch64`)
@@ -142,42 +119,33 @@ make
 qemu-system-aarch64 -M raspi3b -kernel kernel8.img -serial stdio
 ```
 
-### Shell commands
-| Command | Description |
-|---------|-------------|
-| `help`  | List available commands |
-| ...     | ... |
--->
+Additionally, the makefile includes commands to run QEMU with GDB for debugging
+purposes.
 
-TODO
 
 ## What I learned
 
-<!--
-This is the section interviewers respond to most — pick ONE specific, non-obvious
-thing and explain it clearly in a few sentences. Candidates:
-- How ARM64 exception levels (EL0-EL3) work and why they matter for privilege separation
-- What actually happens between power-on and your first line of C code
-- Why a context switch needs to save exactly the registers it saves, no more, no less
 
-Write this like you're explaining it to a smart friend outside CS, not like
-documentation. It should read as insight, not summary.
--->
 
-TODO
+The thing I've found most interesting in implementing my OS so far is exception
+handling. It's very narratively rich. An emergency happens. A deus (the kernel)
+swoops in and handles the issue, and resumes the previous thread, restoring 
+its memory so it seems as if nothing has happened. Reminds me of Apple TV's 
+Severance. These moments of intricate, quiet machinery—whose entire 
+purpose is to go unnoticed, to make our computers run seemlingly magically—are 
+what draw me to systems. This project lets me be a witness to all of that
+silent work. All that being said: the technical implementation of 
+exception handling is a great takeaway from the project so far.
 
 ## Acknowledgments
-
-<!--
-Cite the tutorials/resources you followed (e.g. Sergey Matyukevich's
-raspberry-pi-os, OSDev wiki, the xv6 book) — being upfront about what you
-followed vs. extended makes the extensions more credible, not less.
--->
 
 - [ ] Tutorial(s) followed: 
     bztsrc's raspi3-tutorial (github.com/bztsrc/raspi3-tutorial)
     rlepigre's bare-metal-aarch64 repo (github.com/rlepigre/bare-metal-aarch64)
 - [ ] Reference material:
+    xv6: a simple, Unix-like teaching operating system
+    MIT 6.S081 Labs: Syscalls, Lock
+    Many ARM documents...
 
 ---
 
